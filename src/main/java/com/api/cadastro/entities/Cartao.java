@@ -24,7 +24,7 @@ public class Cartao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_cartao")
-	private Integer id;
+	private Integer idCartao;
 	
 	@Column(name = "numero", nullable = false, length = 150)
 	private String numero;
@@ -32,7 +32,7 @@ public class Cartao {
 	@Column(name = "data_vencimento", nullable = false)
 	private Date dataVencimento;
 	
-	@Column(name = "data_vencimento", nullable = false)
+	@Column(name = "data_emissao", nullable = false)
 	private Date dataEmissao;
 	
 	@Column(name = "cod_seguranca", nullable = false, length = 20)

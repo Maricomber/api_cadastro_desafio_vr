@@ -2,6 +2,8 @@ package com.api.cadastro.dtos;
 
 import java.util.Date;
 
+import com.api.cadastro.enums.TipoCartao;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +15,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CartaoDTO {
 
-	private Integer id;
+	private Integer idCartao;
 	private String numero;
 	private Date dataVencimento;
 	private Date dataEmissao;
 	private String codSeguranca;
+	private TipoCartao tipoCartao;
 	private float saldo;
 	private int idPessoa;
 }

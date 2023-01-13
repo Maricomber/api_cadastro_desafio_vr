@@ -3,6 +3,7 @@ package com.api.cadastro.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class PessoaServiceImpl implements PessoaService {
 	
 	private String msgErro;
 	
-	//private ModelMapper mapper;
+	private ModelMapper mapper = new ModelMapper();
 	
 	private static final Logger log = LoggerFactory.getLogger(PessoaServiceImpl.class);
 	
@@ -33,10 +34,7 @@ public class PessoaServiceImpl implements PessoaService {
 		List<PessoaDTO> pessoasRetorno = new ArrayList<PessoaDTO>();
 		
 		try {
-			//pessoas = this.repository.findAll().stream().map(pessoa-> mapper.mapModels(pessoa, PessoaDTO.class));
-			for(Pessoa pessoa: pessoas) {
-			//	pessoasRetorno.add(mapper.ma);
-			}
+			pessoas.stream().forEach(pessoa->pessoasRetorno.add(mapper.map(pessoa, PessoaDTO.class)));
 			log.info("Busca realizada com sucesso");
 			return pessoasRetorno;
 		}catch (Exception e) {
@@ -56,7 +54,7 @@ public class PessoaServiceImpl implements PessoaService {
 				throw new Exception("Sem resultados.");
 			}
 			log.info("Pessoa encontrado.");
-			return null;// new PessoaDTO(pessoa);
+			return mapper.map(pessoa, PessoaDTO.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao buscar pessoa. "+e.getMessage();
 			log.info(msgErro);
@@ -72,9 +70,8 @@ public class PessoaServiceImpl implements PessoaService {
 		log.info("Salvando pessoa");
 		Pessoa pessoa = new Pessoa();
 		try {
-			//pessoa = this.repository.save(pessoaDTO.toEntity());
-			//return new PessoaDTO(pessoa);
-			return null;
+			pessoa = this.repository.save(mapper.map(pessoaDTO, Pessoa.class));
+			return mapper.map(pessoa, PessoaDTO.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao salvar pessoa. "+e.getMessage();
 			log.info(msgErro);

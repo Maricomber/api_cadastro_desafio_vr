@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.api.cadastro.dtos.CartaoDTO;
 import com.api.cadastro.response.Response;
@@ -22,6 +24,8 @@ import com.api.cadastro.services.CartaoService;
 
 import io.swagger.annotations.*;
 
+@RestController
+@RequestMapping(path = {"/api/cartao"})
 public class CartaoController {
 	
 	@Autowired
@@ -34,7 +38,7 @@ public class CartaoController {
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Response<List<CartaoDTO>>> findCartaos(HttpServletRequest request) {
+	public @ResponseBody ResponseEntity<Response<List<CartaoDTO>>> findAll(HttpServletRequest request) {
 		
 		Response<List<CartaoDTO>> response = new Response<List<CartaoDTO>>();
 		List<String>erros = new ArrayList<String>();
@@ -96,7 +100,7 @@ public class CartaoController {
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@PostMapping
-	public @ResponseBody ResponseEntity<Response<CartaoDTO>> saveUsuario(@RequestBody CartaoDTO cartaoDTO) {
+	public @ResponseBody ResponseEntity<Response<CartaoDTO>> save(@RequestBody CartaoDTO cartaoDTO) {
 		
 		Response<CartaoDTO> response = new Response<CartaoDTO>();
 		List<String>erros = new ArrayList<String>();
@@ -151,7 +155,7 @@ public class CartaoController {
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@DeleteMapping("/{id}")
-	public @ResponseBody ResponseEntity<Response<CartaoDTO>> deleteUsuario(@PathVariable Integer id) {
+	public @ResponseBody ResponseEntity<Response<CartaoDTO>> delete(@PathVariable Integer id) {
 		
 		Response<CartaoDTO> response = new Response<CartaoDTO>();
 		List<String>erros = new ArrayList<String>();

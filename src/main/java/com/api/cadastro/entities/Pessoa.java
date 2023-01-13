@@ -46,7 +46,7 @@ public class Pessoa {
 	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
 	private List<Telefone> telefone;
 	
-	@OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
 	private List<Cartao> cartao;
 	
 }

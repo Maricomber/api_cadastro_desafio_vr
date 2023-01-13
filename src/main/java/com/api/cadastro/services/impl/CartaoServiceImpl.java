@@ -3,6 +3,7 @@ package com.api.cadastro.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class CartaoServiceImpl implements CartaoService{
 	
 	private String msgErro;
 	
-	//private ModelMapper mapper;
+	private ModelMapper mapper = new ModelMapper();
 	
 	private static final Logger log = LoggerFactory.getLogger(CartaoServiceImpl.class);
 	
@@ -32,10 +33,8 @@ public class CartaoServiceImpl implements CartaoService{
 		List<CartaoDTO> cartaosRetorno = new ArrayList<CartaoDTO>();
 		
 		try {
-			//cartaos = this.repository.findAll().stream().map(cartao-> mapper.mapModels(cartao, CartaoDTO.class));
-			for(Cartao cartao: cartaos) {
-			//	cartaosRetorno.add(mapper.ma);
-			}
+			cartaos = this.repository.findAll();
+			cartaos.stream().forEach(cartao->cartaosRetorno.add(mapper.map(cartao, CartaoDTO.class)));
 			log.info("Busca realizada com sucesso");
 			return cartaosRetorno;
 		}catch (Exception e) {
@@ -55,7 +54,7 @@ public class CartaoServiceImpl implements CartaoService{
 				throw new Exception("Sem resultados.");
 			}
 			log.info("Cartao encontrado.");
-			return null;// new CartaoDTO(cartao);
+			return mapper.map(cartao, CartaoDTO.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao buscar cartao. "+e.getMessage();
 			log.info(msgErro);
@@ -71,9 +70,8 @@ public class CartaoServiceImpl implements CartaoService{
 		log.info("Salvando cartao");
 		Cartao cartao = new Cartao();
 		try {
-			//cartao = this.repository.save(cartaoDTO.toEntity());
-			//return new CartaoDTO(cartao);
-			return null;
+			cartao = this.repository.save(mapper.map(cartao, Cartao.class));
+			return mapper.map(cartao, CartaoDTO.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao salvar cartao. "+e.getMessage();
 			log.info(msgErro);

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,11 +22,7 @@ import com.api.cadastro.dtos.PessoaDTO;
 import com.api.cadastro.response.Response;
 import com.api.cadastro.services.PessoaService;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.annotations.*;
 
 @RestController
 @RequestMapping(path = {"/api/pessoa"})
@@ -41,7 +38,7 @@ public class PessoaController {
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Response<List<PessoaDTO>>> findPessoas(HttpServletRequest request) {
+	public @ResponseBody ResponseEntity<Response<List<PessoaDTO>>> findAll(HttpServletRequest request) {
 		
 		Response<List<PessoaDTO>> response = new Response<List<PessoaDTO>>();
 		List<String>erros = new ArrayList<String>();
@@ -103,7 +100,7 @@ public class PessoaController {
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@PostMapping
-	public @ResponseBody ResponseEntity<Response<PessoaDTO>> saveUsuario(@RequestBody PessoaDTO pessoaDTO) {
+	public @ResponseBody ResponseEntity<Response<PessoaDTO>> save(@RequestBody PessoaDTO pessoaDTO) {
 		
 		Response<PessoaDTO> response = new Response<PessoaDTO>();
 		List<String>erros = new ArrayList<String>();
@@ -158,7 +155,7 @@ public class PessoaController {
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@DeleteMapping("/{id}")
-	public @ResponseBody ResponseEntity<Response<PessoaDTO>> deleteUsuario(@PathVariable Integer id) {
+	public @ResponseBody ResponseEntity<Response<PessoaDTO>> delete(@PathVariable Integer id) {
 		
 		Response<PessoaDTO> response = new Response<PessoaDTO>();
 		List<String>erros = new ArrayList<String>();
@@ -175,5 +172,4 @@ public class PessoaController {
 		}
 		return ResponseEntity.ok(response);
 	}
-	
 }
