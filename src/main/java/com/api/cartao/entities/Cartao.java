@@ -23,7 +23,7 @@ public class Cartao {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_pessoa")
+	@Column(name = "id_cartao")
 	private Integer id;
 	
 	@Column(name = "numero", nullable = false, length = 150)
