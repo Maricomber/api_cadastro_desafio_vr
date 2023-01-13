@@ -17,7 +17,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PessoaDTO {
 
-	@JsonIgnore
 	private int idPessoa;
 	private Date dataNascimento;
 	private String nome;
@@ -25,4 +24,5 @@ public class PessoaDTO {
 	private String documento;
 	private TipoPessoa tipoPessoa;
 	private List<TelefoneDTO> telefone;
+	private List<CartaoDTO> cartao;
 }

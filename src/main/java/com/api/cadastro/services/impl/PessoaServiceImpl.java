@@ -30,11 +30,10 @@ public class PessoaServiceImpl implements PessoaService {
 	@Override
 	public List<PessoaDTO> findAll() throws Exception {
 		log.info("Buscando todas os registros de pessoas.");
-		List<Pessoa> pessoas = new ArrayList<Pessoa>();
 		List<PessoaDTO> pessoasRetorno = new ArrayList<PessoaDTO>();
 		
 		try {
-			pessoas.stream().forEach(pessoa->pessoasRetorno.add(mapper.map(pessoa, PessoaDTO.class)));
+			this.repository.findAll().forEach(pessoa->pessoasRetorno.add(mapper.map(pessoa, PessoaDTO.class)));
 			log.info("Busca realizada com sucesso");
 			return pessoasRetorno;
 		}catch (Exception e) {
@@ -70,7 +69,8 @@ public class PessoaServiceImpl implements PessoaService {
 		log.info("Salvando pessoa");
 		Pessoa pessoa = new Pessoa();
 		try {
-			pessoa = this.repository.save(mapper.map(pessoaDTO, Pessoa.class));
+			pessoa = mapper.map(pessoaDTO, Pessoa.class);
+			pessoa = this.repository.save(pessoa);
 			return mapper.map(pessoa, PessoaDTO.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao salvar pessoa. "+e.getMessage();
