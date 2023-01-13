@@ -1,4 +1,4 @@
-package com.api.cartao.entities;
+package com.api.cadastro.entities;
 
 import java.util.Date;
 

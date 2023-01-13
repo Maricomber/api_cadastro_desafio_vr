@@ -1,4 +1,4 @@
-package com.api.cartao.entities;
+package com.api.cadastro.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

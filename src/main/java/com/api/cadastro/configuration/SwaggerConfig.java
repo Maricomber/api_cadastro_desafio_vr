@@ -1,4 +1,4 @@
-package com.api.cartao.configuration;
+package com.api.cadastro.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

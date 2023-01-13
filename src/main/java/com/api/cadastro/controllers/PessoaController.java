@@ -1,4 +1,4 @@
-package com.api.cartao.controllers;
+package com.api.cadastro.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,39 +13,46 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.api.cartao.dtos.CartaoDTO;
-import com.api.cartao.response.Response;
-import com.api.cartao.services.CartaoService;
+import com.api.cadastro.dtos.PessoaDTO;
+import com.api.cadastro.response.Response;
+import com.api.cadastro.services.PessoaService;
 
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
-public class CartaoController {
+@RestController
+@RequestMapping(path = {"/api/pessoa"})
+public class PessoaController {
 	
 	@Autowired
-	CartaoService service;
+	PessoaService service;
 	
-	@ApiOperation(value = "Retorna uma lista de cartaos")
+	@ApiOperation(value = "Retorna uma lista de pessoas")
 	@ApiResponses(value = {
-	    @ApiResponse(code = 200, message = "Lista de cartaos retornada com sucesso"),
+	    @ApiResponse(code = 200, message = "Lista de pessoas retornada com sucesso"),
 	    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Response<List<CartaoDTO>>> findCartaos(HttpServletRequest request) {
+	public @ResponseBody ResponseEntity<Response<List<PessoaDTO>>> findPessoas(HttpServletRequest request) {
 		
-		Response<List<CartaoDTO>> response = new Response<List<CartaoDTO>>();
+		Response<List<PessoaDTO>> response = new Response<List<PessoaDTO>>();
 		List<String>erros = new ArrayList<String>();
 		
 		try{
-			List<CartaoDTO>cartaoDTO = this.service.findAll();
+			List<PessoaDTO>pessoaDTO = this.service.findAll();
 			
-			if(cartaoDTO.isEmpty()) {
-				throw new Exception("Registro de cartaos não encontrado");
+			if(pessoaDTO.isEmpty()) {
+				throw new Exception("Registro de pessoas não encontrado");
 			}
-			response.setData(cartaoDTO);
+			response.setData(pessoaDTO);
 			return ResponseEntity.ok(response);
 		}catch (Exception e) {
 			erros.add(e.getMessage());
@@ -55,18 +62,18 @@ public class CartaoController {
 		
 	}
 	
-	@ApiOperation(value = "Retorna uma cartao por id")
+	@ApiOperation(value = "Retorna uma pessoa por id")
 	@ApiResponses(value = {
-	    @ApiResponse(code = 200, message = "Cartao pesquisada com sucesso"),
+	    @ApiResponse(code = 200, message = "Pessoa pesquisada com sucesso"),
 	    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@GetMapping(path = {"/{id}"},produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Response<CartaoDTO>> findById(@PathVariable Integer id){
+	public @ResponseBody ResponseEntity<Response<PessoaDTO>> findById(@PathVariable Integer id){
 		
 		List<String>erros = new ArrayList<String>();
-		Response<CartaoDTO>response = new Response<CartaoDTO>();
-		CartaoDTO cartaoDTO;
+		Response<PessoaDTO>response = new Response<PessoaDTO>();
+		PessoaDTO pessoaDTO;
 		
 		try {
 			
@@ -74,12 +81,12 @@ public class CartaoController {
 				throw new Exception("Campos em branco");
 			}
 			
-			cartaoDTO= this.service.findById(id);
+			pessoaDTO= this.service.findById(id);
 			
-			if(cartaoDTO.equals(null)) {
+			if(pessoaDTO.equals(null)) {
 				throw new Exception("Usuario não encontrado. ");
 			}
-			response.setData(cartaoDTO);
+			response.setData(pessoaDTO);
 			return ResponseEntity.ok(response);
 		}catch (Exception e) {
 			erros.add(e.getMessage());
@@ -89,25 +96,25 @@ public class CartaoController {
 		
 	}
 	
-	@ApiOperation(value = "Cria um registro de cartao")
+	@ApiOperation(value = "Cria um registro de pessoa")
 	@ApiResponses(value = {
-	    @ApiResponse(code = 200, message = "Registro de cartao criado com sucesso"),
+	    @ApiResponse(code = 200, message = "Registro de pessoa criado com sucesso"),
 	    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@PostMapping
-	public @ResponseBody ResponseEntity<Response<CartaoDTO>> saveUsuario(@RequestBody CartaoDTO cartaoDTO) {
+	public @ResponseBody ResponseEntity<Response<PessoaDTO>> saveUsuario(@RequestBody PessoaDTO pessoaDTO) {
 		
-		Response<CartaoDTO> response = new Response<CartaoDTO>();
+		Response<PessoaDTO> response = new Response<PessoaDTO>();
 		List<String>erros = new ArrayList<String>();
 		
 		try {
 
-			if(cartaoDTO == null) {
+			if(pessoaDTO == null) {
 				throw new Exception("Campos vazios. ");
 			}
-			cartaoDTO = this.service.save(cartaoDTO);
-			response.setData(cartaoDTO);
+			pessoaDTO = this.service.save(pessoaDTO);
+			response.setData(pessoaDTO);
 			return ResponseEntity.ok(response);
 			
 		}catch (Exception e) {
@@ -118,24 +125,24 @@ public class CartaoController {
 		
 	}
 	
-	@ApiOperation(value = "Atualiza um registro de cartao")
+	@ApiOperation(value = "Atualiza um registro de pessoa")
 	@ApiResponses(value = {
-	    @ApiResponse(code = 200, message = "Cartao atualizado com sucesso"),
+	    @ApiResponse(code = 200, message = "Pessoa atualizado com sucesso"),
 	    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes =  MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Response<CartaoDTO>> update(@RequestBody CartaoDTO cartaoDTO){
+	public @ResponseBody ResponseEntity<Response<PessoaDTO>> update(@RequestBody PessoaDTO pessoaDTO){
 		
 		List<String>erros = new ArrayList<String>();
-		Response<CartaoDTO>response = new Response<CartaoDTO>();
+		Response<PessoaDTO>response = new Response<PessoaDTO>();
 		
 		try {
-			cartaoDTO = this.service.save(cartaoDTO);
-			if(cartaoDTO.equals(null)) {
+			pessoaDTO = this.service.save(pessoaDTO);
+			if(pessoaDTO.equals(null)) {
 				return ResponseEntity.badRequest().body(response);
 			}
-		response.setData(cartaoDTO);
+		response.setData(pessoaDTO);
 		return ResponseEntity.ok(response);
 		}catch (Exception e) {
 			erros.add(e.getMessage());
@@ -144,16 +151,16 @@ public class CartaoController {
 		}
 	}
 
-	@ApiOperation(value = "Deleta um registro de cartao")
+	@ApiOperation(value = "Deleta um registro de pessoa")
 	@ApiResponses(value = {
-	    @ApiResponse(code = 200, message = "Cartao deletada com sucesso"),
+	    @ApiResponse(code = 200, message = "Pessoa deletada com sucesso"),
 	    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@DeleteMapping("/{id}")
-	public @ResponseBody ResponseEntity<Response<CartaoDTO>> deleteUsuario(@PathVariable Integer id) {
+	public @ResponseBody ResponseEntity<Response<PessoaDTO>> deleteUsuario(@PathVariable Integer id) {
 		
-		Response<CartaoDTO> response = new Response<CartaoDTO>();
+		Response<PessoaDTO> response = new Response<PessoaDTO>();
 		List<String>erros = new ArrayList<String>();
 		
 		try {
@@ -168,4 +175,5 @@ public class CartaoController {
 		}
 		return ResponseEntity.ok(response);
 	}
+	
 }

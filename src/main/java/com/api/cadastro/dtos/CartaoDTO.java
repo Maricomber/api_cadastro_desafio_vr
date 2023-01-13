@@ -1,4 +1,4 @@
-package com.api.cartao.dtos;
+package com.api.cadastro.dtos;
 
 import java.util.Date;
 

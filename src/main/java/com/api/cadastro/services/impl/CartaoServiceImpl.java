@@ -1,4 +1,4 @@
-package com.api.cartao.services.impl;
+package com.api.cadastro.services.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.cartao.dtos.CartaoDTO;
-import com.api.cartao.entities.Cartao;
-import com.api.cartao.repositories.CartaoRepository;
-import com.api.cartao.services.CartaoService;
+import com.api.cadastro.dtos.CartaoDTO;
+import com.api.cadastro.entities.Cartao;
+import com.api.cadastro.repositories.CartaoRepository;
+import com.api.cadastro.services.CartaoService;
 
 @Service
 public class CartaoServiceImpl implements CartaoService{

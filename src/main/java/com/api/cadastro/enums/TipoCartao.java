@@ -1,4 +1,4 @@
-package com.api.cartao.enums;
+package com.api.cadastro.enums;
 
 public enum TipoCartao {
 

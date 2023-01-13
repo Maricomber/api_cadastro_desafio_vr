@@ -1,4 +1,4 @@
-package com.api.cartao.response;
+package com.api.cadastro.response;
 
 import java.util.ArrayList;
 import java.util.List;

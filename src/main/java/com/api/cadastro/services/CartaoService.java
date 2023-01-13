@@ -1,10 +1,10 @@
-package com.api.cartao.services;
+package com.api.cadastro.services;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.api.cartao.dtos.CartaoDTO;
+import com.api.cadastro.dtos.CartaoDTO;
 
 @Service
 public interface CartaoService {

@@ -1,4 +1,4 @@
-package com.api.cartao.entities;
+package com.api.cadastro.entities;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.api.cartao.enums.TipoPessoa;
+import com.api.cadastro.enums.TipoPessoa;
 
 import lombok.Getter;
 import lombok.Setter;
