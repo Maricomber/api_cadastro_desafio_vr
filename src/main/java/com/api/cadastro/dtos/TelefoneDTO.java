@@ -13,4 +13,5 @@ public class TelefoneDTO {
 
 	private Integer idTelefone;
 	private String numero;
+	private Integer idPessoa;
 }

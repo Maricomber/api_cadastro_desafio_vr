@@ -155,9 +155,9 @@ public class PessoaController {
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@DeleteMapping("/{id}")
-	public @ResponseBody ResponseEntity<Response<PessoaDTO>> delete(@PathVariable Integer id) {
+	public @ResponseBody ResponseEntity<Response<String>> delete(@PathVariable Integer id) {
 		
-		Response<PessoaDTO> response = new Response<PessoaDTO>();
+		Response<String> response = new Response<String>();
 		List<String>erros = new ArrayList<String>();
 		
 		try {
@@ -165,6 +165,7 @@ public class PessoaController {
 				throw new Exception("Campos em branco. ");
 			}
 			this.service.delete(id);
+			response.setData("Deletado com sucesso");
 		}catch (Exception e) {
 			erros.add(e.getMessage());
 			response.setErrors(erros);

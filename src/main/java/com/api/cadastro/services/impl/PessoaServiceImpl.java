@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.api.cadastro.dtos.PessoaDTO;
 import com.api.cadastro.entities.Pessoa;
+import com.api.cadastro.repositories.CartaoRepository;
 import com.api.cadastro.repositories.PessoaRepository;
+import com.api.cadastro.repositories.TelefoneRepository;
 import com.api.cadastro.services.PessoaService;
 
 
@@ -20,6 +22,12 @@ public class PessoaServiceImpl implements PessoaService {
 
 	@Autowired
 	PessoaRepository repository;
+	
+	@Autowired
+	CartaoRepository repositoryCartao;
+	
+	@Autowired
+	TelefoneRepository repositoryTelefone;
 	
 	private String msgErro;
 	
@@ -66,12 +74,13 @@ public class PessoaServiceImpl implements PessoaService {
 		if(pessoaDTO.equals(null)){
 			throw new Exception("Pesquisa em branco. ");
 		}
-		log.info("Salvando pessoa");
-		Pessoa pessoa = new Pessoa();
+		
 		try {
-			pessoa = mapper.map(pessoaDTO, Pessoa.class);
-			pessoa = this.repository.save(pessoa);
-			return mapper.map(pessoa, PessoaDTO.class);
+			log.info("Salvando pessoa");
+			Pessoa pessoa = mapper.map(pessoaDTO, Pessoa.class);
+			pessoa.getCartao().stream().forEach(cartao->cartao.setPessoa(pessoa));
+			pessoa.getTelefone().stream().forEach(telefone->telefone.setPessoa(pessoa));
+			return mapper.map(this.repository.save(pessoa), PessoaDTO.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao salvar pessoa. "+e.getMessage();
 			log.info(msgErro);

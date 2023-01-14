@@ -29,7 +29,7 @@ public class Telefone {
 	private String numero;
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY)  
-    @JoinColumn(name="id_pessoa", nullable = false,  insertable = false)
+	@ManyToOne(cascade = CascadeType.ALL, fetch =  FetchType.LAZY)  
+    @JoinColumn(name="id_pessoa", nullable = false)
 	private Pessoa pessoa;
 }

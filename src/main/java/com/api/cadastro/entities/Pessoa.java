@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,10 +44,10 @@ public class Pessoa {
 	@Column(name = "end_pessoa", length = 150)
 	private String endereco;
 	
-	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
 	private List<Telefone> telefone;
 	
-	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
 	private List<Cartao> cartao;
 	
 }
