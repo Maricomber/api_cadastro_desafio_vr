@@ -22,5 +22,6 @@ public class CartaoDTO {
 	private String codSeguranca;
 	private TipoCartao tipoCartao;
 	private float saldo;
+	private Boolean isAtivo;
 	private int idPessoa;
 }

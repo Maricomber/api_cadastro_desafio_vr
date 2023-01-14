@@ -1,6 +1,6 @@
 package com.api.cadastro.entities;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;

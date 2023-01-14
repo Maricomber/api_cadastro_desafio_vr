@@ -1,10 +1,9 @@
 package com.api.cadastro.dtos;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import com.api.cadastro.enums.TipoPessoa;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
