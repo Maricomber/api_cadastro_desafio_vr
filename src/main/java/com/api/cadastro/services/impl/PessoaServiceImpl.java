@@ -1,5 +1,7 @@
 package com.api.cadastro.services.impl;
 
+import java.sql.SQLDataException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,6 @@ import com.api.cadastro.dtos.PessoaDTO;
 import com.api.cadastro.entities.Pessoa;
 import com.api.cadastro.repositories.CartaoRepository;
 import com.api.cadastro.repositories.PessoaRepository;
-import com.api.cadastro.repositories.TelefoneRepository;
 import com.api.cadastro.services.PessoaService;
 
 
@@ -33,9 +34,9 @@ public class PessoaServiceImpl implements PessoaService {
 	private static final Logger log = LoggerFactory.getLogger(PessoaServiceImpl.class);
 	
 	@Override
-	public List<PessoaDTO> findAll() throws Exception {
+	public List<PessoaDTO> findAll() throws SQLException {
 		log.info("Buscando todas os registros de pessoas.");
-		List<PessoaDTO> pessoasRetorno = new ArrayList<PessoaDTO>();
+		List<PessoaDTO> pessoasRetorno = new ArrayList<>();
 		
 		try {
 			this.repository.findAll().forEach(pessoa->pessoasRetorno.add(mapper.map(pessoa, PessoaDTO.class)));
@@ -44,32 +45,32 @@ public class PessoaServiceImpl implements PessoaService {
 		}catch (Exception e) {
 			msgErro = "Erro ao buscar pessoas. "+e.getMessage();
 			log.info(msgErro);
-			throw new Exception(msgErro);
+			throw new SQLException(msgErro);
 		}
 	}
 
 	@Override
-	public PessoaDTO findById(Integer id_pessoa) throws Exception {
+	public PessoaDTO findById(Integer idPessoa) throws SQLException {
 		log.info("Buscando pessoa.");
 		Pessoa pessoa = new Pessoa();
 		try {
-			pessoa = this.repository.findByIdPessoa(id_pessoa);
+			pessoa = this.repository.findByIdPessoa(idPessoa);
 			if(pessoa == null) {
-				throw new Exception("Sem resultados.");
+				throw new SQLDataException("Sem resultados.");
 			}
 			log.info("Pessoa encontrado.");
 			return mapper.map(pessoa, PessoaDTO.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao buscar pessoa. "+e.getMessage();
 			log.info(msgErro);
-			throw new Exception(msgErro);
+			throw new SQLException(msgErro);
 		}
 	}
 
 	@Override
-	public PessoaDTO save(PessoaDTO pessoaDTO) throws Exception {
-		if(pessoaDTO.equals(null)){
-			throw new Exception("Pesquisa em branco. ");
+	public PessoaDTO save(PessoaDTO pessoaDTO) throws SQLException  {
+		if(pessoaDTO.getDocumento() == null){
+			throw new SQLDataException("Pesquisa em branco.");
 		}
 		
 		try {
@@ -81,22 +82,22 @@ public class PessoaServiceImpl implements PessoaService {
 		}catch (Exception e) {
 			msgErro = "Erro ao salvar pessoa. "+e.getMessage();
 			log.info(msgErro);
-			throw new Exception(msgErro);
+			throw new SQLException(msgErro);
 		}
 	}
 
 	@Override
-	public void delete(Integer id_pessoa) throws Exception {
+	public void delete(Integer idPessoa) throws SQLException {
 		Pessoa pessoa = new Pessoa();
 		log.info("Deletando pessoa...");
 		
 		try{
-			pessoa = this.repository.findByIdPessoa(id_pessoa);
+			pessoa = this.repository.findByIdPessoa(idPessoa);
 			this.repository.delete(pessoa);
-		}catch (Exception e) {;
+		}catch (Exception e) {
 			msgErro = "Erro pessoa não pode ser deletado. "+e.getMessage();
 			log.info(msgErro);
-			throw new Exception(msgErro);
+			throw new SQLException(msgErro);
 		}
 	}
 

@@ -1,5 +1,7 @@
 package com.api.cadastro.services.impl;
 
+import java.sql.SQLDataException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +29,10 @@ public class CartaoServiceImpl implements CartaoService{
 	private static final Logger log = LoggerFactory.getLogger(CartaoServiceImpl.class);
 	
 	@Override
-	public List<CartaoDTO> findAll() throws Exception {
+	public List<CartaoDTO> findAll() throws SQLException {
 		log.info("Buscando todas os registros de cartaos.");
-		List<Cartao> cartaos = new ArrayList<Cartao>();
-		List<CartaoDTO> cartaosRetorno = new ArrayList<CartaoDTO>();
+		List<Cartao> cartaos = new ArrayList<>();
+		List<CartaoDTO> cartaosRetorno = new ArrayList<>();
 		
 		try {
 			cartaos = this.repository.findAll();
@@ -40,32 +42,32 @@ public class CartaoServiceImpl implements CartaoService{
 		}catch (Exception e) {
 			msgErro = "Erro ao buscar cartaos. "+e.getMessage();
 			log.info(msgErro);
-			throw new Exception(msgErro);
+			throw new SQLException(msgErro);
 		}
 	}
 
 	@Override
-	public CartaoDTO findById(Integer id_cartao) throws Exception {
+	public CartaoDTO findById(Integer idCartao) throws SQLException {
 		log.info("Buscando cartao.");
 		Cartao cartao = new Cartao();
 		try {
-			cartao = this.repository.findByIdCartao(id_cartao);
+			cartao = this.repository.findByIdCartao(idCartao);
 			if(cartao == null) {
-				throw new Exception("Sem resultados.");
+				throw new SQLDataException("Sem resultados.");
 			}
 			log.info("Cartao encontrado.");
 			return mapper.map(cartao, CartaoDTO.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao buscar cartao. "+e.getMessage();
 			log.info(msgErro);
-			throw new Exception(msgErro);
+			throw new SQLException(msgErro);
 		}
 	}
 
 	@Override
-	public CartaoDTO save(CartaoDTO cartaoDTO) throws Exception {
-		if(cartaoDTO.equals(null)){
-			throw new Exception("Pesquisa em branco. ");
+	public CartaoDTO save(CartaoDTO cartaoDTO) throws SQLException {
+		if(cartaoDTO == null){
+			throw new SQLDataException("Pesquisa em branco. ");
 		}
 		log.info("Salvando cartao");
 		Cartao cartao = new Cartao();
@@ -75,22 +77,22 @@ public class CartaoServiceImpl implements CartaoService{
 		}catch (Exception e) {
 			msgErro = "Erro ao salvar cartao. "+e.getMessage();
 			log.info(msgErro);
-			throw new Exception(msgErro);
+			throw new SQLException(msgErro);
 		}
 	}
 
 	@Override
-	public void delete(Integer id_cartao) throws Exception {
+	public void delete(Integer idCartao) throws SQLException {
 		Cartao cartao = new Cartao();
 		log.info("Deletando cartao...");
 		
 		try{
-			cartao = this.repository.findByIdCartao(id_cartao);
+			cartao = this.repository.findByIdCartao(idCartao);
 			this.repository.delete(cartao);
-		}catch (Exception e) {;
+		}catch (Exception e) {
 			msgErro = "Erro cartao não pode ser deletado. "+e.getMessage();
 			log.info(msgErro);
-			throw new Exception(msgErro);
+			throw new SQLException(msgErro);
 		}
 	}
 

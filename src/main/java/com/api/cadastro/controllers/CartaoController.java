@@ -1,8 +1,10 @@
 package com.api.cadastro.controllers;
 
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.directory.InvalidAttributesException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +42,14 @@ public class CartaoController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Response<List<CartaoDTO>>> findAll(HttpServletRequest request) {
 		
-		Response<List<CartaoDTO>> response = new Response<List<CartaoDTO>>();
-		List<String>erros = new ArrayList<String>();
+		Response<List<CartaoDTO>> response = new Response<>();
+		List<String>erros = new ArrayList<>();
 		
 		try{
 			List<CartaoDTO>cartaoDTO = this.service.findAll();
 			
 			if(cartaoDTO.isEmpty()) {
-				throw new Exception("Registro de cartões não encontrado");
+				throw new SQLDataException("Registro de cartões não encontrado");
 			}
 			response.setData(cartaoDTO);
 			return ResponseEntity.ok(response);
@@ -68,21 +70,17 @@ public class CartaoController {
 	@GetMapping(path = {"/{id}"},produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Response<CartaoDTO>> findById(@PathVariable Integer id){
 		
-		List<String>erros = new ArrayList<String>();
-		Response<CartaoDTO>response = new Response<CartaoDTO>();
+		List<String>erros = new ArrayList<>();
+		Response<CartaoDTO>response = new Response<>();
 		CartaoDTO cartaoDTO;
 		
 		try {
 			
 			if(id == null) {
-				throw new Exception("Campos em branco");
+				throw new InvalidAttributesException("Campos em branco");
 			}
 			
 			cartaoDTO= this.service.findById(id);
-			
-			if(cartaoDTO.equals(null)) {
-				throw new Exception("Usuario não encontrado. ");
-			}
 			response.setData(cartaoDTO);
 			return ResponseEntity.ok(response);
 		}catch (Exception e) {
@@ -102,13 +100,13 @@ public class CartaoController {
 	@PostMapping
 	public @ResponseBody ResponseEntity<Response<CartaoDTO>> save(@RequestBody CartaoDTO cartaoDTO) {
 		
-		Response<CartaoDTO> response = new Response<CartaoDTO>();
-		List<String>erros = new ArrayList<String>();
+		Response<CartaoDTO> response = new Response<>();
+		List<String>erros = new ArrayList<>();
 		
 		try {
 
 			if(cartaoDTO == null) {
-				throw new Exception("Campos vazios. ");
+				throw new InvalidAttributesException("Campos vazios. ");
 			}
 			cartaoDTO = this.service.save(cartaoDTO);
 			response.setData(cartaoDTO);
@@ -131,12 +129,12 @@ public class CartaoController {
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes =  MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Response<CartaoDTO>> update(@RequestBody CartaoDTO cartaoDTO){
 		
-		List<String>erros = new ArrayList<String>();
-		Response<CartaoDTO>response = new Response<CartaoDTO>();
+		List<String>erros = new ArrayList<>();
+		Response<CartaoDTO>response = new Response<>();
 		
 		try {
 			cartaoDTO = this.service.save(cartaoDTO);
-			if(cartaoDTO.equals(null)) {
+			if(cartaoDTO == (null)) {
 				return ResponseEntity.badRequest().body(response);
 			}
 		response.setData(cartaoDTO);
@@ -157,12 +155,12 @@ public class CartaoController {
 	@DeleteMapping("/{id}")
 	public @ResponseBody ResponseEntity<Response<String>> delete(@PathVariable Integer id) {
 		
-		Response<String> response = new Response<String>();
-		List<String>erros = new ArrayList<String>();
+		Response<String> response = new Response<>();
+		List<String>erros = new ArrayList<>();
 		
 		try {
 			if(id == null) {
-				throw new Exception("Campos em branco. ");
+				throw new InvalidAttributesException("Campos em branco. ");
 			}
 			this.service.delete(id);
 			response.setData("Deletado com sucesso!");

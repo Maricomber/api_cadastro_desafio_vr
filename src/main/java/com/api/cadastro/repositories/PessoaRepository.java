@@ -11,5 +11,5 @@ import com.api.cadastro.entities.Pessoa;
 @Transactional(readOnly = true)
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, Integer> {
-	Pessoa findByIdPessoa(Integer id_pessoa);
+	Pessoa findByIdPessoa(Integer idPessoa);
 }

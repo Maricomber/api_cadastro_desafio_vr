@@ -3,6 +3,7 @@ package com.api.cadastro.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.directory.InvalidAttributesException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +41,14 @@ public class PessoaController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Response<List<PessoaDTO>>> findAll(HttpServletRequest request) {
 		
-		Response<List<PessoaDTO>> response = new Response<List<PessoaDTO>>();
-		List<String>erros = new ArrayList<String>();
+		Response<List<PessoaDTO>> response = new Response<>();
+		List<String>erros = new ArrayList<>();
 		
 		try{
 			List<PessoaDTO>pessoaDTO = this.service.findAll();
 			
 			if(pessoaDTO.isEmpty()) {
-				throw new Exception("Registro de pessoas não encontrado");
+				throw new InvalidAttributesException("Registro de pessoas não encontrado");
 			}
 			response.setData(pessoaDTO);
 			return ResponseEntity.ok(response);
@@ -68,20 +69,20 @@ public class PessoaController {
 	@GetMapping(path = {"/{id}"},produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Response<PessoaDTO>> findById(@PathVariable Integer id){
 		
-		List<String>erros = new ArrayList<String>();
-		Response<PessoaDTO>response = new Response<PessoaDTO>();
+		List<String>erros = new ArrayList<>();
+		Response<PessoaDTO>response = new Response<>();
 		PessoaDTO pessoaDTO;
 		
 		try {
 			
 			if(id == null) {
-				throw new Exception("Campos em branco");
+				throw new InvalidAttributesException("Campos em branco");
 			}
 			
 			pessoaDTO= this.service.findById(id);
 			
-			if(pessoaDTO.equals(null)) {
-				throw new Exception("Usuario não encontrado. ");
+			if(pessoaDTO == null) {
+				throw new InvalidAttributesException("Usuario não encontrado. ");
 			}
 			response.setData(pessoaDTO);
 			return ResponseEntity.ok(response);
@@ -102,13 +103,13 @@ public class PessoaController {
 	@PostMapping
 	public @ResponseBody ResponseEntity<Response<PessoaDTO>> save(@RequestBody PessoaDTO pessoaDTO) {
 		
-		Response<PessoaDTO> response = new Response<PessoaDTO>();
-		List<String>erros = new ArrayList<String>();
+		Response<PessoaDTO> response = new Response<>();
+		List<String>erros = new ArrayList<>();
 		
 		try {
 
 			if(pessoaDTO == null) {
-				throw new Exception("Campos vazios. ");
+				throw new InvalidAttributesException("Campos vazios. ");
 			}
 			pessoaDTO = this.service.save(pessoaDTO);
 			response.setData(pessoaDTO);
@@ -131,12 +132,12 @@ public class PessoaController {
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes =  MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Response<PessoaDTO>> update(@RequestBody PessoaDTO pessoaDTO){
 		
-		List<String>erros = new ArrayList<String>();
-		Response<PessoaDTO>response = new Response<PessoaDTO>();
+		List<String>erros = new ArrayList<>();
+		Response<PessoaDTO>response = new Response<>();
 		
 		try {
 			pessoaDTO = this.service.save(pessoaDTO);
-			if(pessoaDTO.equals(null)) {
+			if(pessoaDTO == null) {
 				return ResponseEntity.badRequest().body(response);
 			}
 		response.setData(pessoaDTO);
@@ -157,12 +158,12 @@ public class PessoaController {
 	@DeleteMapping("/{id}")
 	public @ResponseBody ResponseEntity<Response<String>> delete(@PathVariable Integer id) {
 		
-		Response<String> response = new Response<String>();
-		List<String>erros = new ArrayList<String>();
+		Response<String> response = new Response<>();
+		List<String>erros = new ArrayList<>();
 		
 		try {
 			if(id == null) {
-				throw new Exception("Campos em branco. ");
+				throw new InvalidAttributesException("Campos em branco. ");
 			}
 			this.service.delete(id);
 			response.setData("Deletado com sucesso");

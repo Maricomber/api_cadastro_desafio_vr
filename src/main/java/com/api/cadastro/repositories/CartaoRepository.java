@@ -7,6 +7,6 @@ import com.api.cadastro.entities.Cartao;
 
 @Repository
 public interface CartaoRepository extends JpaRepository<Cartao, Integer> {
-	Cartao findByIdCartao(Integer id_cartao);
+	Cartao findByIdCartao(Integer idCartao);
 
 }
