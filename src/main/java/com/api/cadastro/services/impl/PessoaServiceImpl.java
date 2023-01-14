@@ -26,9 +26,6 @@ public class PessoaServiceImpl implements PessoaService {
 	@Autowired
 	CartaoRepository repositoryCartao;
 	
-	@Autowired
-	TelefoneRepository repositoryTelefone;
-	
 	private String msgErro;
 	
 	private ModelMapper mapper = new ModelMapper();

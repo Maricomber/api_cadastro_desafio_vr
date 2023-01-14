@@ -70,7 +70,7 @@ public class CartaoServiceImpl implements CartaoService{
 		log.info("Salvando cartao");
 		Cartao cartao = new Cartao();
 		try {
-			cartao = this.repository.save(mapper.map(cartao, Cartao.class));
+			cartao = this.repository.save(mapper.map(cartaoDTO, Cartao.class));
 			return mapper.map(cartao, CartaoDTO.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao salvar cartao. "+e.getMessage();

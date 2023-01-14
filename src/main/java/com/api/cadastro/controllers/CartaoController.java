@@ -31,9 +31,9 @@ public class CartaoController {
 	@Autowired
 	CartaoService service;
 	
-	@ApiOperation(value = "Retorna uma lista de cartaos")
+	@ApiOperation(value = "Retorna uma lista de cartões")
 	@ApiResponses(value = {
-	    @ApiResponse(code = 200, message = "Lista de cartaos retornada com sucesso"),
+	    @ApiResponse(code = 200, message = "Lista de cartões retornada com sucesso"),
 	    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
@@ -47,7 +47,7 @@ public class CartaoController {
 			List<CartaoDTO>cartaoDTO = this.service.findAll();
 			
 			if(cartaoDTO.isEmpty()) {
-				throw new Exception("Registro de cartaos não encontrado");
+				throw new Exception("Registro de cartões não encontrado");
 			}
 			response.setData(cartaoDTO);
 			return ResponseEntity.ok(response);
@@ -59,9 +59,9 @@ public class CartaoController {
 		
 	}
 	
-	@ApiOperation(value = "Retorna uma cartao por id")
+	@ApiOperation(value = "Retorna uma cartão por id")
 	@ApiResponses(value = {
-	    @ApiResponse(code = 200, message = "Cartao pesquisada com sucesso"),
+	    @ApiResponse(code = 200, message = "Cartão pesquisada com sucesso"),
 	    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
@@ -93,9 +93,9 @@ public class CartaoController {
 		
 	}
 	
-	@ApiOperation(value = "Cria um registro de cartao")
+	@ApiOperation(value = "Cria um registro de cartão")
 	@ApiResponses(value = {
-	    @ApiResponse(code = 200, message = "Registro de cartao criado com sucesso"),
+	    @ApiResponse(code = 200, message = "Registro de cartão criado com sucesso"),
 	    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
@@ -122,9 +122,9 @@ public class CartaoController {
 		
 	}
 	
-	@ApiOperation(value = "Atualiza um registro de cartao")
+	@ApiOperation(value = "Atualiza um registro de cartão")
 	@ApiResponses(value = {
-	    @ApiResponse(code = 200, message = "Cartao atualizado com sucesso"),
+	    @ApiResponse(code = 200, message = "Cartão atualizado com sucesso"),
 	    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
@@ -148,16 +148,16 @@ public class CartaoController {
 		}
 	}
 
-	@ApiOperation(value = "Deleta um registro de cartao")
+	@ApiOperation(value = "Deleta um registro de cartão")
 	@ApiResponses(value = {
-	    @ApiResponse(code = 200, message = "Cartao deletada com sucesso"),
+	    @ApiResponse(code = 200, message = "Cartão deletado com sucesso"),
 	    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso"),
 	    @ApiResponse(code = 500, message = "Foi gerada uma exceção"),
 	})
 	@DeleteMapping("/{id}")
-	public @ResponseBody ResponseEntity<Response<CartaoDTO>> delete(@PathVariable Integer id) {
+	public @ResponseBody ResponseEntity<Response<String>> delete(@PathVariable Integer id) {
 		
-		Response<CartaoDTO> response = new Response<CartaoDTO>();
+		Response<String> response = new Response<String>();
 		List<String>erros = new ArrayList<String>();
 		
 		try {
@@ -165,6 +165,7 @@ public class CartaoController {
 				throw new Exception("Campos em branco. ");
 			}
 			this.service.delete(id);
+			response.setData("Deletado com sucesso!");
 		}catch (Exception e) {
 			erros.add(e.getMessage());
 			response.setErrors(erros);

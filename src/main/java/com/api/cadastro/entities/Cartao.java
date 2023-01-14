@@ -42,7 +42,7 @@ public class Cartao {
 	@Column(name = "saldo", nullable = false)
 	private float saldo;
 	
-	@ManyToOne(cascade = CascadeType.ALL,fetch =  FetchType.LAZY)  
+	@ManyToOne(cascade = CascadeType.MERGE,fetch =  FetchType.LAZY)  
     @JoinColumn(name="id_pessoa", nullable = false)
 	private Pessoa pessoa;
 }
