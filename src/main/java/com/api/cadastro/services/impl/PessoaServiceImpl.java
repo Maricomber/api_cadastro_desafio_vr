@@ -1,9 +1,10 @@
 package com.api.cadastro.services.impl;
 
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.NoResultException;
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -56,7 +57,7 @@ public class PessoaServiceImpl implements PessoaService {
 		try {
 			pessoa = this.repository.findByIdPessoa(idPessoa);
 			if(pessoa == null) {
-				throw new SQLDataException("Sem resultados.");
+				throw new NoResultException("Sem resultados.");
 			}
 			log.info("Pessoa encontrado.");
 			return mapper.map(pessoa, PessoaDTO.class);
@@ -70,7 +71,7 @@ public class PessoaServiceImpl implements PessoaService {
 	@Override
 	public PessoaDTO save(PessoaDTO pessoaDTO) throws SQLException  {
 		if(pessoaDTO.getDocumento() == null){
-			throw new SQLDataException("Pesquisa em branco.");
+			throw new NoResultException("Pesquisa em branco.");
 		}
 		
 		try {
