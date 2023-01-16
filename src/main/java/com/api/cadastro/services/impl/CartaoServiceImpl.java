@@ -9,19 +9,15 @@ import javax.persistence.NoResultException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.api.cadastro.dtos.CartaoDTO;
-import com.api.cadastro.entities.Cartao;
-import com.api.cadastro.repositories.CartaoRepository;
+import com.api.cadastro.response.Response;
 import com.api.cadastro.services.CartaoService;
 
 @Service
 public class CartaoServiceImpl implements CartaoService{
-
-	@Autowired
-	CartaoRepository repository;
 	
 	private String msgErro;
 	
@@ -29,17 +25,19 @@ public class CartaoServiceImpl implements CartaoService{
 	
 	private static final Logger log = LoggerFactory.getLogger(CartaoServiceImpl.class);
 	
+	private static final String api_cadastro_cartao = "http://localhost:8084/api/cartao/";
+	
+	RestTemplate restTemplate = new RestTemplate(); 
+	
 	@Override
 	public List<CartaoDTO> findAll() throws SQLException {
 		log.info("Buscando todas os registros de cartaos.");
-		List<Cartao> cartaos = new ArrayList<>();
 		List<CartaoDTO> cartaosRetorno = new ArrayList<>();
 		
 		try {
-			cartaos = this.repository.findAll();
-			cartaos.stream().forEach(cartao->cartaosRetorno.add(mapper.map(cartao, CartaoDTO.class)));
+			Response<CartaoDTO> response = restTemplate.getForObject(api_cadastro_cartao, Response.class);
 			log.info("Busca realizada com sucesso");
-			return cartaosRetorno;
+			return mapper.map(response.getData(), List.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao buscar cartaos. "+e.getMessage();
 			log.info(msgErro);
@@ -50,14 +48,10 @@ public class CartaoServiceImpl implements CartaoService{
 	@Override
 	public CartaoDTO findById(Integer idCartao) throws SQLException {
 		log.info("Buscando cartao.");
-		Cartao cartao = new Cartao();
 		try {
-			cartao = this.repository.findByIdCartao(idCartao);
-			if(cartao == null) {
-				throw new NoResultException("Sem resultados.");
-			}
-			log.info("Cartao encontrado.");
-			return mapper.map(cartao, CartaoDTO.class);
+			Response<CartaoDTO> response = restTemplate.getForObject(api_cadastro_cartao, Response.class);
+			log.info("Busca realizada com sucesso");
+			return mapper.map(response.getData(), CartaoDTO.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao buscar cartao. "+e.getMessage();
 			log.info(msgErro);
@@ -71,10 +65,10 @@ public class CartaoServiceImpl implements CartaoService{
 			throw new NoResultException("Pesquisa em branco. ");
 		}
 		log.info("Salvando cartao");
-		Cartao cartao = new Cartao();
 		try {
-			cartao = this.repository.save(mapper.map(cartaoDTO, Cartao.class));
-			return mapper.map(cartao, CartaoDTO.class);
+			Response<CartaoDTO>response = restTemplate.postForObject(api_cadastro_cartao, cartaoDTO, Response.class);
+			log.info("Busca realizada com sucesso");
+			return mapper.map(response.getData(), CartaoDTO.class);
 		}catch (Exception e) {
 			msgErro = "Erro ao salvar cartao. "+e.getMessage();
 			log.info(msgErro);
@@ -84,12 +78,10 @@ public class CartaoServiceImpl implements CartaoService{
 
 	@Override
 	public void delete(Integer idCartao) throws SQLException {
-		Cartao cartao = new Cartao();
 		log.info("Deletando cartao...");
 		
 		try{
-			cartao = this.repository.findByIdCartao(idCartao);
-			this.repository.delete(cartao);
+			restTemplate.delete(api_cadastro_cartao+idCartao, Integer.class);
 		}catch (Exception e) {
 			msgErro = "Erro cartao não pode ser deletado. "+e.getMessage();
 			log.info(msgErro);
